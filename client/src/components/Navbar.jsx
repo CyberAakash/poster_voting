@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <div
-      className="fixed top-0 pt-6 left-[50%] translate-x-[-50%] bg-transparent backdrop-blur-lg text-white 
+      className="fixed top-0 pt-6 left-[50%] translate-x-[-50%] bg-transparent backdrop-blur-xl text-white 
     flex flex-col items-center justify-center w-full gap-3 z-50"
     >
       <div className="relative flex items-center justify-around gap-4 min-w-fit min-h-fit">
@@ -23,7 +23,7 @@ function Navbar() {
           PHOTO-CLUB
         </h1>
       </div>
-      <hr className="text-black bg-black h-1 w-[40%]" />
+      {/* <hr className="text-black bg-black h-1 w-[40%]" /> */}
       <div className="relative text-sm flex items-center justify-center gap-6 md:gap-12 border-2 border-black min-w-[65%] bg-white text-black p-2 rounded-3xl">
         <div className="h-2 w-2 bg-black rounded-full absolute left-2 top-[50%] translate-y-[-50%]"></div>
         <div className="h-2 w-2 bg-black rounded-full absolute right-2 top-[50%] translate-y-[-50%]"></div>
