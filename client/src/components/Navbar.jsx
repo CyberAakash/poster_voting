@@ -19,7 +19,7 @@ function Navbar() {
         <div className="h-1 w-2 bg-black rounded-full absolute -left-4 top-[50%] translate-y-[-50%]"></div>
         <div className="h-1 w-2 bg-black rounded-full absolute -right-4 top-[50%] translate-y-[-50%]"></div>
         <h1 className="text-transparent bg-clip-text bg-gradient-to-tr from-pink-600 via-sky-500 to-green-500 
-        font-extrabold text-3xl w-fit">
+        font-extrabold text-3xl w-fit brightness-200">
           PHOTO-CLUB
         </h1>
       </div>
@@ -30,16 +30,16 @@ function Navbar() {
         <Link to="/" className="cursor-pointer">
           Home
         </Link>
-        <Link to="/" className="cursor-pointer">
+        <Link to="/vote" className="cursor-pointer">
           Vote
         </Link>
-        <Link to="/" className="cursor-pointer">
+        <Link to="/pics" className="cursor-pointer">
           Pics
         </Link>
-        <Link to="/" className="cursor-pointer">
+        <Link to="/about" className="cursor-pointer">
           About
         </Link>
-        <Link to="/" className="cursor-pointer">
+        <Link to="/contact" className="cursor-pointer">
           Contact
         </Link>
       </div>

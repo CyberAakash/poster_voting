@@ -8,6 +8,10 @@ export default {
       },
     },
   },
-  plugins: [],
+  daisyui: {
+    themes: [],
+  },
+  // eslint-disable-next-line no-undef
+  plugins: [require("daisyui")],
 };
 

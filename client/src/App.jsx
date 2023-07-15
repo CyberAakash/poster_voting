@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Router>
-        <div className='flex items-center justify-center w-screen overflow-hidden min-h-fit px-0 sm:px-14 py-0 m-0'>
+        <div className="relative flex flex-col items-center justify-center w-screen overflow-hidden min-h-fit px-0 sm:px-14 py-0 m-0">
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             {/* <Route exact path="/trains" element={<Read />} />
