@@ -33,18 +33,27 @@ function Form() {
         if (querySnapshot.docs.length > 0) {
           alert("You have already voted.");
         } else {
-          // If the admission number is valid and hasn't voted yet, add the vote
-          await addDoc(votesCollectionRef, {
-            admNo: Number(admNo),
-            cardNo: Number(cardNo),
-          });
-          // Add the voted admission number to the list and save to localStorage
-          setVotedAdmNumbers([...votedAdmNumbers, admNo]);
-          localStorage.setItem(
-            "votedAdmNumbers",
-            JSON.stringify([...votedAdmNumbers, admNo])
+          // If the admission number is valid and hasn't voted yet, check if the cardNo exists in the "cards" collection
+          const cardSnapshot = await getDocs(
+            query(cardsCollectionRef, where("cardNo", "==", Number(cardNo)))
           );
-          alert("Voted successfully!");
+          if (cardSnapshot.docs.length > 0) {
+            // If the cardNo exists, add the vote
+            await addDoc(votesCollectionRef, {
+              admNo: Number(admNo),
+              cardNo: Number(cardNo),
+            });
+            // Add the voted admission number to the list and save to localStorage
+            setVotedAdmNumbers([...votedAdmNumbers, admNo]);
+            localStorage.setItem(
+              "votedAdmNumbers",
+              JSON.stringify([...votedAdmNumbers, admNo])
+            );
+            alert("Voted successfully!");
+          } else {
+            // If the cardNo does not exist, inform the user that the given cardNo is wrong
+            alert("The given cardNo is wrong. Please enter a valid cardNo.");
+          }
         }
       } else {
         alert("Invalid Admission Number");
@@ -54,7 +63,6 @@ function Form() {
       alert("Error occurred while voting. Please try again later.");
     }
   };
-
 
 
   useEffect(() => {
