@@ -24,7 +24,7 @@ function Navbar() {
         </h1>
       </div>
       {/* <hr className="text-black bg-black h-1 w-[40%]" /> */}
-      <div className="relative text-xs sm:text-sm flex items-center justify-center gap-6 md:gap-12 border-2 border-black min-w-[65%] bg-white text-black p-2 rounded-3xl">
+      <div className="relative text-xs sm:text-sm flex items-center justify-center gap-2 sm:gap-6 md:gap-12 border-2 border-black min-w-[85%] bg-white text-black p-2 rounded-3xl">
         <div className="h-2 w-2 bg-black rounded-full absolute left-2 top-[50%] translate-y-[-50%]"></div>
         <div className="h-2 w-2 bg-black rounded-full absolute right-2 top-[50%] translate-y-[-50%]"></div>
         <Link to="/" className="cursor-pointer">

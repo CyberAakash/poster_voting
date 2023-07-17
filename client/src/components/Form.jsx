@@ -1,15 +1,79 @@
 import { useState, useEffect } from "react";
-// import { collection, getDoc, orderBy, query, where } from "firebase/firestore";
-// import { db } from "../firebase";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Form() {
+  // const [newAdmNo, setNewAdmNo] = useState(0)
+  // const [newCardNo, setNewCardNo] = useState(0);
+
   const [cardNo, setCardNo] = useState(0);
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
-  const [admNo, setAdmNo] = useState(12345);
+  const [admNo, setAdmNo] = useState(16000);
   // const [card, setCard] = useState({});
   // const cardsCollectionRef = collection(db, "cards", "F6Z4lDtVWOnNeTegl82w");
   // const q = query(cardsCollectionRef, where("cardNo", "==", { srchNo }));
+const [searchedCardNo, setSearchedCardNo] = useState(""); // For search input
+const votesCollectionRef = collection(db, "votes");
+const cardsCollectionRef = collection(db, "cards");
+
+  // Load voted admission numbers from localStorage or initialize as an empty array
+  const [votedAdmNumbers, setVotedAdmNumbers] = useState(
+    JSON.parse(localStorage.getItem("votedAdmNumbers")) || []
+  );
+
+  const createVote = async (e) => {
+    e.preventDefault();
+    try {
+      // Check if the admission number has already voted (in the local state)
+      if (votedAdmNumbers.includes(admNo)) {
+        alert("You have already voted.");
+      } else if (admNo >= 16000 && admNo <= 18000) {
+        // Check if the admission number has already voted (in Firestore)
+        const querySnapshot = await getDocs(
+          query(votesCollectionRef, where("admNo", "==", Number(admNo)))
+        );
+        if (querySnapshot.docs.length > 0) {
+          alert("You have already voted.");
+        } else {
+          // If the admission number is valid and hasn't voted yet, add the vote
+          await addDoc(votesCollectionRef, {
+            admNo: Number(admNo),
+            cardNo: Number(cardNo),
+          });
+          // Add the voted admission number to the list and save to localStorage
+          setVotedAdmNumbers([...votedAdmNumbers, admNo]);
+          localStorage.setItem(
+            "votedAdmNumbers",
+            JSON.stringify([...votedAdmNumbers, admNo])
+          );
+          alert("Voted successfully!");
+        }
+      } else {
+        alert("Invalid Admission Number");
+      }
+    } catch (e) {
+      console.error("Error adding vote:", e);
+      alert("Error occurred while voting. Please try again later.");
+    }
+  };
+  // const createVote = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (admNo >= 16000 && admNo <= 18000) {
+  //       await addDoc(votesCollectionRef, {
+  //         admNo: Number(admNo),
+  //         cardNo: Number(cardNo),
+  //       });
+  //       alert("Voted successfully!");
+  //     } else {
+  //       alert("Invalid Admission Number");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error adding vote:", e);
+  //     alert("Error occurred while voting. Please try again later.");
+  //   }
+  // };
 
   useEffect(() => {
     setCardNo(localStorage.getItem("cardNo"));
@@ -23,22 +87,55 @@ function Form() {
     // getCards();
   }, []);
 
+  // useEffect to update card information based on the searched cardNo
+  useEffect(() => {
+    const checkSrch = async () => {
+      // Check if the searchedCardNo is a number
+      if (!isNaN(searchedCardNo) && searchedCardNo !== "") {
+        const searchCardNo = Number(searchedCardNo);
+        // Query the Firestore to find the card with the matching cardNo
+        const querySnapshot = await getDocs(
+          query(cardsCollectionRef, where("cardNo", "==", searchCardNo))
+        );
 
-  
-  // const [srchNo, setSrchNo] = useState(0);
-  
+        if (!querySnapshot.empty) {
+          const cardData = querySnapshot.docs[0].data();
+          setCardNo(cardData.cardNo);
+          setImg(cardData.img);
+          setName(cardData.name);
+        } else {
+          // If the card with the searched cardNo is not found, reset the card info
+          setCardNo(0);
+          setImg("");
+          setName("");
+        }
+      } else {
+        // If the search input is not a valid number, reset the card info
+        setCardNo(0);
+        setImg("");
+        setName("");
+      }
+    }
+
+    checkSrch()
+  }, [searchedCardNo]);
+
 
   return (
     <div className="relative flex flex-col w-full min-h-fit overflow-hidden items-center justify-center gap-6">
-      <form className="flex flex-row items-center justify-center gap-0 text-black bg-transparent mb-4">
+      <form
+        className="flex flex-row items-center justify-center gap-0 text-black bg-transparent mb-4"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <label className="text-lg p-[6px] bg-black text-white rounded-l-2xl">
           Search
         </label>
         <input
-        name="srchNo"
+          // name="srchNo"
           type="number"
           className="border-2 border-black p-2 max-w-xs text-sm rounded-r-2xl"
-          // onChange={(e) => setSrchNo(e.target.value)}
+          value={searchedCardNo}
+          onChange={(e) => setSearchedCardNo(e.target.value)}
         />
       </form>
       <div className="grid gap-4 md:gap-10 p-10 pt-0 place-items-center grid-cols-1 lg:grid-cols-2 w-full min-h-[10rem] max-h-fit ">
@@ -74,7 +171,10 @@ function Form() {
             </div>
           </div>
           <div className="flex items-center justify-center w-[90%] border-2 border-black rounded-tl-2xl rounded-br-2xl">
-            <button className="w-full bg-white text-black p-2 text-sm font-semibold min-w-96 rounded-tl-2xl rounded-br-2xl">
+            <button
+              onClick={(e) => createVote(e)}
+              className="w-full bg-white text-black p-2 text-sm font-semibold min-w-96 rounded-tl-2xl rounded-br-2xl"
+            >
               Submit
             </button>
           </div>

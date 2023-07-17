@@ -16,8 +16,8 @@ function CardPic(props) {
     border-2 border-black rounded-2xl"
     >
       <div
-        className="absolute -bottom-4 -right-4 z-20 bg-black text-yellow-400 rounded-full h-12 w-12 
-      flex items-center justify-center text-center border-2 border-yellow-400"
+        className="absolute -bottom-4 -right-4 z-20 bg-white text-greenBlue rounded-full h-12 w-12 
+      flex items-center justify-center text-center border-2 border-greenBlue"
       >
         {props.cardNo}
       </div>
