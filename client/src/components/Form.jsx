@@ -2,20 +2,17 @@ import { useState, useEffect } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
+
 function Form() {
-  // const [newAdmNo, setNewAdmNo] = useState(0)
-  // const [newCardNo, setNewCardNo] = useState(0);
+
 
   const [cardNo, setCardNo] = useState(0);
   const [img, setImg] = useState("");
   const [name, setName] = useState("");
   const [admNo, setAdmNo] = useState(16000);
-  // const [card, setCard] = useState({});
-  // const cardsCollectionRef = collection(db, "cards", "F6Z4lDtVWOnNeTegl82w");
-  // const q = query(cardsCollectionRef, where("cardNo", "==", { srchNo }));
-const [searchedCardNo, setSearchedCardNo] = useState(""); // For search input
-const votesCollectionRef = collection(db, "votes");
-const cardsCollectionRef = collection(db, "cards");
+  const [searchedCardNo, setSearchedCardNo] = useState(""); // For search input
+  const votesCollectionRef = collection(db, "votes");
+  const cardsCollectionRef = collection(db, "cards");
 
   // Load voted admission numbers from localStorage or initialize as an empty array
   const [votedAdmNumbers, setVotedAdmNumbers] = useState(
@@ -57,34 +54,21 @@ const cardsCollectionRef = collection(db, "cards");
       alert("Error occurred while voting. Please try again later.");
     }
   };
-  // const createVote = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (admNo >= 16000 && admNo <= 18000) {
-  //       await addDoc(votesCollectionRef, {
-  //         admNo: Number(admNo),
-  //         cardNo: Number(cardNo),
-  //       });
-  //       alert("Voted successfully!");
-  //     } else {
-  //       alert("Invalid Admission Number");
-  //     }
-  //   } catch (e) {
-  //     console.error("Error adding vote:", e);
-  //     alert("Error occurred while voting. Please try again later.");
-  //   }
-  // };
+
+
 
   useEffect(() => {
-    setCardNo(localStorage.getItem("cardNo"));
-    setImg(localStorage.getItem("img"));
-    setName(localStorage.getItem("name"));
-    // const getCards = async () => {
-    //   const data = await getDoc(cardsCollectionRef);
-    //   console.log(data);
-    //   setCard(data.docs.data);
-    // };
-    // getCards();
+    // Fetch the stored data from localStorage
+    const storedCardNo = localStorage.getItem("cardNo");
+    const storedImg = localStorage.getItem("img");
+    const storedName = localStorage.getItem("name");
+
+    // Update the states if the stored data is valid
+    if (storedCardNo && storedImg && storedName) {
+      setCardNo(Number(storedCardNo));
+      setImg(storedImg);
+      setName(storedName);
+    }
   }, []);
 
   // useEffect to update card information based on the searched cardNo
@@ -105,21 +89,22 @@ const cardsCollectionRef = collection(db, "cards");
           setName(cardData.name);
         } else {
           // If the card with the searched cardNo is not found, reset the card info
-          setCardNo(0);
-          setImg("");
-          setName("");
+          // setCardNo(0);
+          // setImg("");
+          // setName("");
+          console.log("Not found")
         }
       } else {
         // If the search input is not a valid number, reset the card info
-        setCardNo(0);
-        setImg("");
-        setName("");
+        // setCardNo(0);
+        // setImg("");
+        // setName("");
+        console.log("Invalid Number")
       }
-    }
+    };
 
-    checkSrch()
+    checkSrch();
   }, [searchedCardNo]);
-
 
   return (
     <div className="relative flex flex-col w-full min-h-fit overflow-hidden items-center justify-center gap-6">
