@@ -33,14 +33,15 @@ function Banner() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center gap-3">
+      {/* <div className="flex flex-col items-center justify-center gap-3">
         <h1 className="text-black font-semibold text-xl">Voting Deadline</h1>
         <span className="countdown font-mono text-4xl text-white font-semibold bg-slate-500 p-3 border-x-2 border-t-2 border-black rounded-t-lg">
           <span style={{ "--value": 10 }}></span>:
           <span style={{ "--value": 24 }}></span>:
           <span style={{ "--value": 36 }}></span>
         </span>
-      </div>
+      </div> */}
+      {/* You can open the modal using ID.showModal() method */}
     </div>
   );
 }
